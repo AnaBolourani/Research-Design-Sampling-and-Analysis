@@ -1,8 +1,8 @@
 # #__________________________________________________________________________________________________________________
-# ### STAT 202A: HW2
+# ### STAT 202A: HW3
 # ### Problem 1 
 
-# ### Anahita Bolourani, UID:505851808
+# ### Ana Bolourani
 # #__________________________________________________________________________________________________________________
 
 # ================================================
@@ -256,8 +256,8 @@ plot.design(Mean_Scrumptiousness ~ A + B + C, data = plot_data,
 dev.off()
 
 # plot main effect similar to lecture 4 (char4)
-# # Assuming 'data' is your dataframe that includes factors A, B, and C along with Mean_Scrumptiousness
-# Preparing the data
+# Assuming 'data' is your dataframe that includes factors A, B, and C along with Mean_Scrumptiousness
+# Calculating means for each level of the factors A, B, and C
 mean_A <- mean(data$Mean_Scrumptiousness[data$A == 1])
 mean_B <- mean(data$Mean_Scrumptiousness[data$B == 1])
 mean_C <- mean(data$Mean_Scrumptiousness[data$C == 1])
@@ -267,20 +267,21 @@ mean_B_neg <- mean(data$Mean_Scrumptiousness[data$B == -1])
 mean_C_neg <- mean(data$Mean_Scrumptiousness[data$C == -1])
 
 # Creating a vector for plot
-factors <- c(mean_A_neg, mean_A, mean_B_neg, mean_B, mean_C_neg, mean_C)
+# Creating vectors for plot
+factors_A <- c(mean_A_neg, mean_A)
+factors_B <- c(mean_B_neg, mean_B)
+factors_C <- c(mean_C_neg, mean_C)
 labels <- c("- A", "+ A", "- B", "+ B", "- C", "+ C")
+factors_all <- c(factors_A, factors_B, factors_C)
 
-
-png(filename = file.path(output_dir, "Main_Effects.png"))
-# Plotting
-plot(factors, type = "o", pch = 19, xaxt = "n", ylab = "", xlab = "", ylim = c(min(factors) - 0.2, max(factors) + 0.2), xlab = NA, ylab = NA, axes = FALSE)
-axis(1, at = 1:length(labels), labels = labels, las = 1)  # las=1 makes labels horizontal
-axis(2, las = 1)
-# box()
-
-# Adding a simple title (optional)
-title(main="Main Effects Plot", xlab="", ylab="Response Value")
-
+# Plotting and saving the file
+png(filename = file.path(output_dir, "Main_Effect.png"))  # Open the PNG device
+plot(NA, xlim = c(1, 6), ylim = c(min(factors_all) - 0.2, max(factors_all) + 0.2), type = "n", xaxt = 'n', yaxt = 's', ylab = "", xlab = "Factors", main = "Main Effects Plot")
+axis(1, at = c(1, 1.5, 3, 3.5, 5, 5.5), labels = labels, las = 1)  # Custom x-axis labels
+points(c(1, 1.5), factors_A, pch = 19, type = "b", lty = 1)  # Plot points and lines for factor A
+points(c(3, 3.5), factors_B, pch = 19, type = "b", lty = 1)  # Plot points and lines for factor B
+points(c(5, 5.5), factors_C, pch = 19, type = "b", lty = 1)  # Plot points and lines for factor C
+box()  # Add a box around the plot
 dev.off()
 
 #--------------------------------------------------------
@@ -354,8 +355,6 @@ three_way_plot <- ggplot(data, aes(x = A_factor, y = Mean_Scrumptiousness, color
 # Save the plot
 ggsave(filename = file.path(output_dir, "Three_Way_Interaction_Plot.png"), plot = three_way_plot)
 
-
-#- - - - - - - - - - - - - - - - - - - - - - - - 
 #- - - - - - - - - - - - - - - - - - - - - - - - 
 
 #11. Inform the User of Completion
